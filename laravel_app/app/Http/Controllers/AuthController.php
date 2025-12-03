@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -15,7 +18,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'user_name' => ['required'],
+            'user_name' => ['required', 'string'],
             'password' => ['required'],
         ]);
 
@@ -28,6 +31,30 @@ class AuthController extends Controller
         return back()->withErrors([
             'user_name' => 'The provided credentials do not match our records.',
         ])->onlyInput('user_name');
+    }
+
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
+    }
+
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'user_name' => ['required', 'string', 'max:255', 'unique:users,user_name', 'alpha_dash'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'confirmed', Password::min(8)],
+        ]);
+
+        $user = User::create([
+            'user_name' => $validated['user_name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        Auth::login($user);
+
+        return redirect()->route('dashboard')->with('success', 'Registration successful! Welcome to the School System.');
     }
 
     public function logout(Request $request)

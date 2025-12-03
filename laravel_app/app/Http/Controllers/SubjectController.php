@@ -9,7 +9,7 @@ class SubjectController extends Controller
 {
     public function index()
     {
-        $subjects = Subject::all();
+        $subjects = Subject::orderBy('subject_order')->get();
         return view('subjects.index', compact('subjects'));
     }
 
