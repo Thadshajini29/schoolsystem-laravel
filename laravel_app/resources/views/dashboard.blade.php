@@ -126,7 +126,7 @@
                                     <a href="{{ route('students.show', $student) }}" class="list-group-item list-group-item-action border-0 px-0">
                                         <div class="d-flex align-items-center">
                                             @if($student->file_path)
-                                                <img src="{{ asset('storage/' . $student->file_path) }}" alt="{{ $student->student_name }}" class="rounded-circle me-3" width="40" height="40">
+                                                <img src="/storage/{{ $student->file_path }}" alt="{{ $student->student_name }}" class="rounded-circle me-3" width="40" height="40">
                                             @else
                                                 <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
                                                     <i class="bi bi-person"></i>
