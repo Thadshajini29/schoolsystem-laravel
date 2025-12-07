@@ -9,7 +9,7 @@ class GradeController extends Controller
 {
     public function index()
     {
-        $grades = Grade::orderBy('grade_order')->get();
+        $grades = Grade::orderBy('grade_order')->paginate(15);
         return view('grades.index', compact('grades'));
     }
 

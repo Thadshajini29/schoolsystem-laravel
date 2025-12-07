@@ -284,24 +284,30 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('students.*') ? 'active' : '' }}" href="{{ route('students.index') }}">
-                    <i class="bi bi-people-fill"></i>
-                    <span>Students</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('grades.*') ? 'active' : '' }}" href="{{ route('grades.index') }}">
-                    <i class="bi bi-bookmark-fill"></i>
-                    <span>Grades</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('subjects.*') ? 'active' : '' }}" href="{{ route('subjects.index') }}">
-                    <i class="bi bi-book-fill"></i>
-                    <span>Subjects</span>
-                </a>
-            </li>
+            
+            @if(Auth::user()->isAdmin() || Auth::user()->isTeacher() || Auth::user()->isStaff())
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('students.*') ? 'active' : '' }}" href="{{ route('students.index') }}">
+                        <i class="bi bi-people-fill"></i>
+                        <span>Students</span>
+                    </a>
+                </li>
+            @endif
+
+            @if(Auth::user()->isAdmin() || Auth::user()->isTeacher())
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('grades.*') ? 'active' : '' }}" href="{{ route('grades.index') }}">
+                        <i class="bi bi-bookmark-fill"></i>
+                        <span>Grades</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('subjects.*') ? 'active' : '' }}" href="{{ route('subjects.index') }}">
+                        <i class="bi bi-book-fill"></i>
+                        <span>Subjects</span>
+                    </a>
+                </li>
+            @endif
         </ul>
     </nav>
 
