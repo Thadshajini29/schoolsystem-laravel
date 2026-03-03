@@ -50,6 +50,7 @@ class AuthController extends Controller
             'user_name' => $validated['user_name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            // 'password' => $validated['password'], // Store as plain text for demonstration (not recommended for production)
             'role' => 'student', // Default role assignment
         ]);
 
@@ -92,12 +93,12 @@ class AuthController extends Controller
 
         // In a production environment, you would verify the token and update the password
         // For demonstration, we'll just show success message
-        
+
         $user = User::where('email', $request->email)->first();
         if ($user) {
             $user->password = Hash::make($request->password);
             $user->save();
-            
+
             return redirect()->route('login')->with('success', 'Password has been reset successfully! Please login with your new password.');
         }
 
