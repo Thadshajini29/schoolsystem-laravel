@@ -1,0 +1,34 @@
+PHPUnit 11.5.55 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.3.28
+Configuration: C:\thadshajini\schoolsystem-laravel\laravel_app\phpunit.xml
+
+.E                                                                  2 / 2 (100%)
+
+Time: 00:00.645, Memory: 24.00 MB
+
+There was 1 error:
+
+1) Tests\Feature\ExampleTest::test_the_application_returns_a_successful_response
+Illuminate\Contracts\Container\BindingResolutionException: Target [Illuminate\Contracts\Debug\ExceptionHandler] is not instantiable.
+
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Container\Container.php:1411
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Container\Container.php:1131
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Container\Container.php:933
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:1078
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Container\Container.php:864
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:1058
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\nunomaduro\collision\src\Adapters\Laravel\CollisionServiceProvider.php:61
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:896
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php:74
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:871
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterProviders.php:37
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:342
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php:494
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Foundation\Testing\TestCase.php:51
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Foundation\Testing\TestCase.php:73
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\InteractsWithTestCaseLifecycle.php:96
+C:\thadshajini\schoolsystem-laravel\laravel_app\vendor\laravel\framework\src\Illuminate\Foundation\Testing\TestCase.php:63
+
+ERRORS!
+Tests: 2, Assertions: 1, Errors: 1.
