@@ -25,13 +25,21 @@
                     @endif
                     <h3 class="font-weight-bold text-dark mb-1">{{ $student->student_name }}</h3>
                     <p class="text-primary mb-3">{{ $student->grade->grade_name }}</p>
-                    <div class="d-flex justify-content-center gap-2">
-                        <a href="{{ route('students.edit', $student) }}" class="btn btn-warning text-white btn-sm">
-                            <i class="bi bi-pencil-fill me-1"></i> Edit
+                    <div class="d-flex flex-column gap-2 mt-4 px-4">
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="{{ route('students.edit', $student) }}" class="btn btn-warning text-white btn-sm flex-fill">
+                                <i class="bi bi-pencil-fill me-1"></i> Edit
+                            </a>
+                            <button type="button" class="btn btn-danger btn-sm flex-fill" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $student->id }}">
+                                <i class="bi bi-trash-fill me-1"></i> Delete
+                            </button>
+                        </div>
+                        <a href="{{ route('students.id_card', $student) }}" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-card-image me-1"></i> Generate ID Card
                         </a>
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $student->id }}">
-                            <i class="bi bi-trash-fill me-1"></i> Delete
-                        </button>
+                        <a href="{{ route('marks.report', $student) }}" class="btn btn-outline-info btn-sm">
+                            <i class="bi bi-file-earmark-person me-1"></i> View Report Card
+                        </a>
                     </div>
 
                     <!-- Delete Modal -->
@@ -85,6 +93,14 @@
                     <div class="row mb-3 border-bottom pb-2">
                         <div class="col-sm-4 fw-bold text-secondary">Gender</div>
                         <div class="col-sm-8 text-dark">{{ $student->gender ?? 'N/A' }}</div>
+                    </div>
+                    <div class="row mb-3 border-bottom pb-2">
+                        <div class="col-sm-4 fw-bold text-secondary">Admission Date</div>
+                        <div class="col-sm-8 text-dark">{{ $student->admission_date ? \Carbon\Carbon::parse($student->admission_date)->format('d M, Y') : 'N/A' }}</div>
+                    </div>
+                    <div class="row mb-3 border-bottom pb-2">
+                        <div class="col-sm-4 fw-bold text-secondary">Academic Year</div>
+                        <div class="col-sm-8 text-dark">{{ $student->academic_year ?? 'N/A' }}</div>
                     </div>
                     <div class="row mb-3 border-bottom pb-2">
                         <div class="col-sm-4 fw-bold text-secondary">Phone No</div>

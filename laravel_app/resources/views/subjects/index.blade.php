@@ -71,7 +71,7 @@
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
                                         
-                                        @if(Auth::user()->isAdmin() || Auth::user()->isTeacher())
+                                        @if(Auth::user()->isAdmin())
                                             <a href="{{ route('subjects.edit', $subject) }}" 
                                                class="btn btn-sm btn-outline-warning" 
                                                data-bs-toggle="tooltip" 

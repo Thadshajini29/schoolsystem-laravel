@@ -20,12 +20,60 @@ class CheckRole
             return redirect()->route('login');
         }
 
-        foreach ($roles as $role) {
-            if ($request->user()->hasRole($role)) {
-                return $next($request);
+        $userRole = $request->user()->role;
+
+        // ---------------------------------------------------------------------
+        // Check Required Roles (if any specified in route)
+        // ---------------------------------------------------------------------
+        if (!empty($roles)) {
+            $hasRole = false;
+            foreach ($roles as $role) {
+                if ($userRole === $role) {
+                    $hasRole = true;
+                    break;
+                }
+            }
+            if (!$hasRole) {
+                // Return immediate redirect instead of 403
+                if ($userRole === 'student' || $userRole === 'teacher') {
+                    return redirect()->route('students.index');
+                }
+                return redirect()->route('dashboard');
             }
         }
 
-        abort(403, 'Unauthorized action.');
+        // ---------------------------------------------------------------------
+        // Strict Student Redirection (if access is permitted by middleware 
+        // group, but explicitly blocked by specific actions)
+        // ---------------------------------------------------------------------
+        if ($userRole === 'student') {
+            $blockedRoutes = [
+                'students.create', 'students.edit', 'students.update', 'students.destroy',
+                'grades.create', 'grades.edit', 'grades.update', 'grades.destroy',
+                'subjects.create', 'subjects.edit', 'subjects.update', 'subjects.destroy',
+                'teachers.create', 'teachers.edit', 'teachers.update', 'teachers.destroy',
+                'subjects.manage', 'grades.add_subjects', 'students.add_subjects', 'students.store_subjects', 'grades.store_subjects'
+            ];
+            if ($request->routeIs($blockedRoutes)) {
+                return redirect()->route('students.index');
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Strict Teacher Redirection
+        // ---------------------------------------------------------------------
+        if ($userRole === 'teacher') {
+            $teacherBlocked = [
+                'grades.create', 'grades.edit', 'grades.update', 'grades.destroy',
+                'subjects.create', 'subjects.edit', 'subjects.update', 'subjects.destroy',
+                'teachers.create', 'teachers.edit', 'teachers.update', 'teachers.destroy',
+                'subjects.manage',
+            ];
+            if ($request->routeIs($teacherBlocked)) {
+                return redirect()->route('students.index');
+            }
+        }
+
+        return $next($request);
     }
 }

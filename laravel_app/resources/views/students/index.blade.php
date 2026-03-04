@@ -13,6 +13,49 @@
     </div>
 
     <div class="card shadow mb-4 fade-in">
+        <div class="card-body">
+            <form action="{{ route('students.index') }}" method="GET" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label for="search" class="form-label small fw-bold">Search Name</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                        <input type="text" name="search" id="search" class="form-control" placeholder="Search by name..." value="{{ request('search') }}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="grade_id" class="form-label small fw-bold">Filter Grade</label>
+                    <select name="grade_id" id="grade_id" class="form-select">
+                        <option value="">All Grades</option>
+                        @foreach($grades as $grade)
+                            <option value="{{ $grade->id }}" {{ request('grade_id') == $grade->id ? 'selected' : '' }}>
+                                {{ $grade->grade_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="gender" class="form-label small fw-bold">Gender</label>
+                    <select name="gender" id="gender" class="form-select">
+                        <option value="">All</option>
+                        <option value="Male" {{ request('gender') == 'Male' ? 'selected' : '' }}>Male</option>
+                        <option value="Female" {{ request('gender') == 'Female' ? 'selected' : '' }}>Female</option>
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-filter me-2"></i>Filter
+                    </button>
+                    @if(request()->anyFilled(['search', 'grade_id', 'gender']))
+                        <a href="{{ route('students.index') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle"></i>
+                        </a>
+                    @endif
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4 fade-in">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">
                 <i class="bi bi-list-ul me-2"></i>Student List

@@ -9,6 +9,7 @@
             <p class="text-muted small mb-0">Grade Details and Information</p>
         </div>
         <div class="d-flex gap-2">
+@if(Auth::user()->isAdmin() || Auth::user()->isTeacher())
             <a href="{{ route('grades.edit', $grade) }}" class="btn btn-warning text-white">
                 <i class="bi bi-pencil me-2"></i>Edit
             </a>
@@ -18,6 +19,7 @@
             <a href="{{ route('grades.index') }}" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left me-2"></i>Back
             </a>
+@endif
         </div>
     </div>
 

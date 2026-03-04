@@ -66,7 +66,8 @@ class GradeController extends Controller
     public function addSubjects(Grade $grade)
     {
         $subjects = \App\Models\Subject::all();
-        return view('grades.add_subjects', compact('grade', 'subjects'));
+        $teachers = \App\Models\Teacher::all();
+        return view('grades.add_subjects', compact('grade', 'subjects', 'teachers'));
     }
 
     public function storeSubjects(Request $request, Grade $grade)
@@ -74,9 +75,21 @@ class GradeController extends Controller
         $request->validate([
             'subjects' => 'array',
             'subjects.*' => 'exists:subjects,id',
+            'teachers' => 'array',
+            'teachers.*' => 'required_with:subjects.*|exists:teachers,id',
         ]);
 
-        $grade->subjects()->sync($request->subjects);
+        $syncData = [];
+        if ($request->has('subjects')) {
+            foreach ($request->subjects as $subjectId) {
+                $teacherId = $request->teachers[$subjectId] ?? null;
+                if ($teacherId) {
+                    $syncData[$subjectId] = ['teacher_id' => $teacherId];
+                }
+            }
+        }
+
+        $grade->subjects()->sync($syncData);
 
         return redirect()->route('grades.show', $grade)->with('success', 'Subjects updated successfully.');
     }

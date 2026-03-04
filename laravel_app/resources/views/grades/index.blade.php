@@ -76,6 +76,9 @@
                                                title="Manage Subjects">
                                                 <i class="bi bi-book"></i>
                                             </a>
+                                        @endif
+                                        
+                                        @if(Auth::user()->isAdmin())
                                             <a href="{{ route('grades.edit', $grade) }}" 
                                                class="btn btn-sm btn-outline-warning" 
                                                data-bs-toggle="tooltip" 

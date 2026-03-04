@@ -32,11 +32,11 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h6 class="text-muted mb-2">Total Grades</h6>
-                                <h2 class="mb-0 fw-bold text-success">{{ \App\Models\Grade::count() }}</h2>
+                                <h6 class="text-muted mb-2">Total Teachers</h6>
+                                <h2 class="mb-0 fw-bold text-success">{{ \App\Models\Teacher::count() }}</h2>
                             </div>
                             <div class="stat-icon bg-success bg-opacity-10 rounded-circle p-3">
-                                <i class="bi bi-bookmark-fill text-success fs-3"></i>
+                                <i class="bi bi-person-workspace text-success fs-3"></i>
                             </div>
                         </div>
                     </div>
@@ -64,11 +64,13 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h6 class="text-muted mb-2">Total Users</h6>
-                                <h2 class="mb-0 fw-bold text-warning">{{ \App\Models\User::count() }}</h2>
+                                <h6 class="text-muted mb-2">Today Attendance</h6>
+                                <h2 class="mb-0 fw-bold text-warning">
+                                    {{ \App\Models\Attendance::whereDate('date', now())->where('status', 'present')->count() }}
+                                </h2>
                             </div>
                             <div class="stat-icon bg-warning bg-opacity-10 rounded-circle p-3">
-                                <i class="bi bi-person-badge-fill text-warning fs-3"></i>
+                                <i class="bi bi-calendar-check-fill text-warning fs-3"></i>
                             </div>
                         </div>
                     </div>
@@ -76,6 +78,7 @@
             </div>
         </div>
 
+        @if(auth()->user()->isAdmin())
         <!-- Quick Actions -->
         <div class="row g-4 mb-4">
             <div class="col-md-12">
@@ -108,6 +111,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
         <!-- Recent Activity -->
         <div class="row g-4">

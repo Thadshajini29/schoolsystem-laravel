@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Edit Student')
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0 text-gray-800">Edit Student</h1>
@@ -98,6 +98,23 @@
                         <label for="phone_no" class="form-label fw-bold text-secondary">Phone No</label>
                         <input type="text" name="phone_no" id="phone_no" class="form-control @error('phone_no') is-invalid @enderror" value="{{ old('phone_no', $student->phone_no) }}">
                         @error('phone_no')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="admission_date" class="form-label fw-bold text-secondary">Admission Date</label>
+                        <input type="date" name="admission_date" id="admission_date" class="form-control @error('admission_date') is-invalid @enderror" value="{{ old('admission_date', $student->admission_date) }}">
+                        @error('admission_date')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="academic_year" class="form-label fw-bold text-secondary">Academic Year</label>
+                        <input type="text" name="academic_year" id="academic_year" class="form-control @error('academic_year') is-invalid @enderror" value="{{ old('academic_year', $student->academic_year) }}" placeholder="e.g. 2024">
+                        @error('academic_year')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

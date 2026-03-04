@@ -308,6 +308,38 @@
                     </a>
                 </li>
             @endif
+            @if(Auth::user()->isAdmin())
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('teachers.*') ? 'active' : '' }}" href="{{ route('teachers.index') }}">
+                        <i class="bi bi-person-workspace"></i>
+                        <span>Teachers</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('activity_logs.*') ? 'active' : '' }}" href="{{ route('activity_logs.index') }}">
+                        <i class="bi bi-activity"></i>
+                        <span>Activity Log</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('promotions.*') ? 'active' : '' }}" href="{{ route('promotions.index') }}">
+                        <i class="bi bi-box-arrow-up"></i>
+                        <span>Promotions</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('announcements.*') ? 'active' : '' }}" href="{{ route('announcements.index') }}">
+                        <i class="bi bi-megaphone-fill"></i>
+                        <span>Announcements</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('timetables.*') ? 'active' : '' }}" href="{{ route('timetables.index') }}">
+                        <i class="bi bi-calendar-event"></i>
+                        <span>Timetable</span>
+                    </a>
+                </li>
+            @endif
         </ul>
     </nav>
 

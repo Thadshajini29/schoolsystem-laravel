@@ -62,24 +62,45 @@
                             
                             <div class="row">
                                 @foreach($subjects as $subject)
-                                    <div class="col-md-6 col-lg-4 mb-3">
-                                        <div class="form-check subject-item p-3 rounded border {{ $grade->subjects->contains($subject->id) ? 'border-success bg-success bg-opacity-10' : '' }}">
-                                            <input class="form-check-input subject-checkbox" 
-                                                   type="checkbox" 
-                                                   name="subjects[]" 
-                                                   value="{{ $subject->id }}" 
-                                                   id="subject_{{ $subject->id }}"
-                                                   {{ $grade->subjects->contains($subject->id) ? 'checked' : '' }}>
-                                            <label class="form-check-label d-block" for="subject_{{ $subject->id }}">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="rounded-circle me-2" 
-                                                          style="width: 12px; height: 12px; background-color: {{ $subject->subject_color ?? '#6c757d' }}; display: inline-block;"></span>
-                                                    <strong>{{ $subject->subject_name }}</strong>
+                                    @php
+                                        $assignedSubject = $grade->subjects->find($subject->id);
+                                        $assignedTeacherId = $assignedSubject ? $assignedSubject->pivot->teacher_id : null;
+                                    @endphp
+                                    <div class="col-md-12 mb-3">
+                                        <div class="subject-item p-3 rounded border {{ $assignedSubject ? 'border-success bg-success bg-opacity-10' : '' }}">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-5">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input subject-checkbox" 
+                                                               type="checkbox" 
+                                                               name="subjects[]" 
+                                                               value="{{ $subject->id }}" 
+                                                               id="subject_{{ $subject->id }}"
+                                                               {{ $assignedSubject ? 'checked' : '' }}>
+                                                        <label class="form-check-label d-block" for="subject_{{ $subject->id }}">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="rounded-circle me-2" 
+                                                                      style="width: 12px; height: 12px; background-color: {{ $subject->subject_color ?? '#6c757d' }}; display: inline-block;"></span>
+                                                                <strong>{{ $subject->subject_name }}</strong>
+                                                            </div>
+                                                            <small class="text-muted">
+                                                                {{ $subject->subject_index ?? 'N/A' }}
+                                                            </small>
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                                <small class="text-muted">
-                                                    {{ $subject->subject_index ?? 'N/A' }} | Order: {{ $subject->subject_order ?? '0' }}
-                                                </small>
-                                            </label>
+                                                <div class="col-md-7">
+                                                    <label class="small text-muted mb-1">Assign Teacher</label>
+                                                    <select name="teachers[{{ $subject->id }}]" class="form-select form-select-sm teacher-select" {{ !$assignedSubject ? 'disabled' : '' }}>
+                                                        <option value="">Select Teacher</option>
+                                                        @foreach($teachers as $teacher)
+                                                            <option value="{{ $teacher->id }}" {{ $assignedTeacherId == $teacher->id ? 'selected' : '' }}>
+                                                                {{ $teacher->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 @endforeach
@@ -193,10 +214,16 @@
         
         function updateItemStyle(checkbox) {
             const item = checkbox.closest('.subject-item');
+            const teacherSelect = item.querySelector('.teacher-select');
             if (checkbox.checked) {
                 item.classList.add('border-success', 'bg-success', 'bg-opacity-10');
+                teacherSelect.disabled = false;
+                teacherSelect.required = true;
             } else {
                 item.classList.remove('border-success', 'bg-success', 'bg-opacity-10');
+                teacherSelect.disabled = true;
+                teacherSelect.required = false;
+                teacherSelect.value = '';
             }
         }
         

@@ -10,12 +10,32 @@ use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $students = Student::with('grade')
-            ->orderBy('student_name')
-            ->paginate(15);
-        return view('students.index', compact('students'));
+        $query = Student::with('grade');
+
+        // Search by Name
+        if ($request->filled('search')) {
+            $query->where('student_name', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by Grade
+        if ($request->filled('grade_id')) {
+            $query->where('grade_id', $request->grade_id);
+        }
+
+        // Filter by Gender
+        if ($request->filled('gender')) {
+            $query->where('gender', $request->gender);
+        }
+
+        $students = $query->orderBy('student_name')
+            ->paginate(15)
+            ->withQueryString();
+
+        $grades = Grade::all();
+        
+        return view('students.index', compact('students', 'grades'));
     }
 
     public function create()
@@ -36,6 +56,8 @@ class StudentController extends Controller
             'gender' => 'nullable|in:Male,Female',
             'phone_no' => 'nullable|string|max:20',
             'address' => 'nullable|string',
+            'admission_date' => 'nullable|date',
+            'academic_year' => 'nullable|string|max:50',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -78,6 +100,8 @@ class StudentController extends Controller
             'gender' => 'nullable|in:Male,Female',
             'phone_no' => 'nullable|string|max:20',
             'address' => 'nullable|string',
+            'admission_date' => 'nullable|date',
+            'academic_year' => 'nullable|string|max:50',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -128,5 +152,10 @@ class StudentController extends Controller
         $student->subjects()->sync($request->subjects);
 
         return redirect()->route('students.show', $student)->with('success', 'Subjects updated successfully.');
+    }
+
+    public function idCard(Student $student)
+    {
+        return view('students.id_card', compact('student'));
     }
 }

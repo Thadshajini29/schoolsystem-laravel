@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\AnnouncementController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,7 +24,7 @@ Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'role'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -44,6 +45,16 @@ Route::middleware(['auth'])->group(function () {
         Route::get('subjects/create', [SubjectController::class, 'create'])->name('subjects.create');
         Route::post('subjects', [SubjectController::class, 'store'])->name('subjects.store');
         Route::delete('subjects/{subject}', [SubjectController::class, 'destroy'])->name('subjects.destroy');
+        
+        // Teacher management
+        Route::resource('teachers', \App\Http\Controllers\TeacherController::class);
+        
+        // Activity Logs
+        Route::get('activity-logs', [\App\Http\Controllers\ActivityLogController::class, 'index'])->name('activity_logs.index');
+
+        // Promotions
+        Route::get('promotions', [\App\Http\Controllers\PromotionController::class, 'index'])->name('promotions.index');
+        Route::post('promotions', [\App\Http\Controllers\PromotionController::class, 'promote'])->name('promotions.submit');
     });
 
     // Admin and Teacher routes - View and Edit
@@ -63,15 +74,34 @@ Route::middleware(['auth'])->group(function () {
         // Subjects - Edit
         Route::get('subjects/{subject}/edit', [SubjectController::class, 'edit'])->name('subjects.edit');
         Route::put('subjects/{subject}', [SubjectController::class, 'update'])->name('subjects.update');
+        
+        // Attendance
+        Route::get('attendance', [\App\Http\Controllers\AttendanceController::class, 'index'])->name('attendance.index');
+        Route::post('attendance', [\App\Http\Controllers\AttendanceController::class, 'store'])->name('attendance.store');
+        Route::get('attendance-report', [\App\Http\Controllers\AttendanceController::class, 'report'])->name('attendance.report');
+        
+        // Marks
+        Route::get('marks', [\App\Http\Controllers\MarkController::class, 'index'])->name('marks.index');
+        Route::post('marks', [\App\Http\Controllers\MarkController::class, 'store'])->name('marks.store');
+        Route::get('report-card/{student}', [\App\Http\Controllers\MarkController::class, 'report'])->name('marks.report');
     });
 
     // All authenticated users - View only
     Route::get('students', [StudentController::class, 'index'])->name('students.index');
     Route::get('students/{student}', [StudentController::class, 'show'])->name('students.show');
+    Route::get('students/{student}/id-card', [StudentController::class, 'idCard'])->name('students.id_card');
     
     Route::get('grades', [GradeController::class, 'index'])->name('grades.index');
     Route::get('grades/{grade}', [GradeController::class, 'show'])->name('grades.show');
     
     Route::get('subjects', [SubjectController::class, 'index'])->name('subjects.index');
     Route::get('subjects/{subject}', [SubjectController::class, 'show'])->name('subjects.show');
+
+    // Announcements
+    Route::resource('announcements', AnnouncementController::class);
+
+    // Timetables
+    Route::get('timetables', [\App\Http\Controllers\TimetableController::class, 'index'])->name('timetables.index');
+    Route::post('timetables', [\App\Http\Controllers\TimetableController::class, 'store'])->name('timetables.store');
+    Route::delete('timetables/{timetable}', [\App\Http\Controllers\TimetableController::class, 'destroy'])->name('timetables.destroy');
 });

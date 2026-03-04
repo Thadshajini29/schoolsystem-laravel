@@ -22,6 +22,8 @@ class Student extends Model
         'file_path',
         'original_name',
         'file_size',
+        'admission_date',
+        'academic_year',
     ];
 
     public function grade()
@@ -32,5 +34,15 @@ class Student extends Model
     public function subjects()
     {
         return $this->belongsToMany(Subject::class, 'student_subject');
+    }
+
+    public function attendance()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    public function marks()
+    {
+        return $this->hasMany(Mark::class);
     }
 }
