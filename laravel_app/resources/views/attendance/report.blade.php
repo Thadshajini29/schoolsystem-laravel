@@ -52,30 +52,38 @@
         </div>
     </div>
 
-    <div class="row g-4 mb-4 fade-in">
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm text-center p-3 h-100 bg-success bg-opacity-10">
+    <div class="row g-3 mb-4 fade-in">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3 h-100 bg-success bg-opacity-10 border-start border-4 border-success">
                 <div class="card-body">
-                    <h6 class="text-muted mb-2">Total Present</h6>
+                    <h6 class="text-muted mb-2">Present</h6>
                     <h2 class="mb-0 fw-bold text-success">{{ $attendanceData->where('status', 'present')->count() }}</h2>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm text-center p-3 h-100 bg-danger bg-opacity-10">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3 h-100 bg-danger bg-opacity-10 border-start border-4 border-danger">
                 <div class="card-body">
-                    <h6 class="text-muted mb-2">Total Absent</h6>
+                    <h6 class="text-muted mb-2">Absent</h6>
                     <h2 class="mb-0 fw-bold text-danger">{{ $attendanceData->where('status', 'absent')->count() }}</h2>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm text-center p-3 h-100 bg-info bg-opacity-10">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3 h-100 bg-warning bg-opacity-10 border-start border-4 border-warning">
                 <div class="card-body">
-                    <h6 class="text-muted mb-2">Average Attendance Rate</h6>
+                    <h6 class="text-muted mb-2">Late</h6>
+                    <h2 class="mb-0 fw-bold text-warning-emphasis">{{ $attendanceData->where('status', 'late')->count() }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3 h-100 bg-info bg-opacity-10 border-start border-4 border-info">
+                <div class="card-body">
+                    <h6 class="text-muted mb-2">Attendance Rate</h6>
                     @php
                         $total = $attendanceData->count();
-                        $present = $attendanceData->where('status', 'present')->count();
+                        $present = $attendanceData->whereIn('status', ['present', 'late'])->count();
                         $rate = $total > 0 ? round(($present / $total) * 100, 1) : 0;
                     @endphp
                     <h2 class="mb-0 fw-bold text-info">{{ $rate }}%</h2>
@@ -96,22 +104,26 @@
                     <table class="table table-hover align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th>Date</th>
+                                <th class="ps-4">Date</th>
                                 <th>Student</th>
                                 <th>Grade</th>
-                                <th>Status</th>
+                                <th class="text-center">Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($attendanceData->sortByDesc('date') as $entry)
                                 <tr>
-                                    <td>{{ \Carbon\Carbon::parse($entry->date)->format('d M, Y') }}</td>
-                                    <td class="fw-semibold">{{ $entry->student->student_name }}</td>
+                                    <td class="ps-4 small text-muted">{{ \Carbon\Carbon::parse($entry->date)->format('d M, Y') }}</td>
+                                    <td class="fw-semibold text-dark">{{ $entry->student->student_name }}</td>
                                     <td><span class="badge bg-light text-dark border">{{ $entry->grade->grade_name }}</span></td>
-                                    <td>
-                                        <span class="badge {{ $entry->status == 'present' ? 'bg-success' : 'bg-danger' }}">
-                                            {{ ucfirst($entry->status) }}
-                                        </span>
+                                    <td class="text-center">
+                                        @if($entry->status == 'present')
+                                            <span class="badge bg-success-soft text-success border border-success px-3">Present</span>
+                                        @elseif($entry->status == 'absent')
+                                            <span class="badge bg-danger-soft text-danger border border-danger px-3">Absent</span>
+                                        @else
+                                            <span class="badge bg-warning-soft text-warning-emphasis border border-warning px-3">Late</span>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

@@ -23,7 +23,7 @@
                     </h6>
                 </div>
                 <div class="card-body p-4">
-                    <form action="{{ route('teachers.store') }}" method="POST">
+                    <form action="{{ route('teachers.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         
                         <div class="mb-3">
@@ -49,6 +49,15 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="image" class="form-label fw-bold">Profile Image</label>
+                            <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror" accept="image/*" onchange="setupImagePreview('image', 'imagePreview')">
+                            <div id="imagePreview" class="mt-2"></div>
+                            @error('image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <hr class="my-4">

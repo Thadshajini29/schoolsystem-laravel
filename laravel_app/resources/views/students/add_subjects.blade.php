@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Manage Subjects')
 @section('content')
     <div class="mb-4">
         <h2>Manage Subjects for {{ $student->student_name }}</h2>

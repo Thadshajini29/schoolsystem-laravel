@@ -23,7 +23,7 @@
                     </h6>
                 </div>
                 <div class="card-body p-4">
-                    <form action="{{ route('teachers.update', $teacher) }}" method="POST">
+                    <form action="{{ route('teachers.update', $teacher) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         
@@ -50,6 +50,20 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="image" class="form-label fw-bold">Profile Image</label>
+                            <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror" accept="image/*" onchange="setupImagePreview('image', 'imagePreview')">
+                            <div id="imagePreview" class="mt-2 text-center">
+                                @if($teacher->image_path)
+                                    <img src="{{ asset('storage/' . $teacher->image_path) }}" alt="Current Profile" class="img-thumbnail" style="max-height: 150px;">
+                                    <p class="small text-muted mt-1">Current Image</p>
+                                @endif
+                            </div>
+                            @error('image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <hr class="my-4">

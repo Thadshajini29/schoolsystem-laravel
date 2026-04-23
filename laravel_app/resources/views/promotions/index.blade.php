@@ -8,6 +8,9 @@
             </h1>
             <p class="text-muted small mb-0">Batch promote students to the next academic grade</p>
         </div>
+        <a href="{{ route('promotions.history') }}" class="btn btn-outline-info">
+            <i class="bi bi-clock-history me-2"></i>Promotion History
+        </a>
     </div>
 
     <div class="card shadow-sm border-0 mb-4 fade-in">
@@ -41,25 +44,27 @@
 
                 <div class="card-header bg-white py-3">
                     <div class="row align-items-center">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <h6 class="m-0 fw-bold text-dark">
                                 Students in {{ $selectedGrade->grade_name }} 
                                 <span class="badge bg-light text-primary border ms-2 small">{{ $students->count() }} total</span>
                             </h6>
                         </div>
-                        <div class="col-md-6">
-                            <div class="d-flex align-items-center justify-content-md-end gap-3 mt-md-0 mt-3">
-                                <label class="small fw-bold text-nowrap mb-0 me-2">Promote To Target Grade:</label>
+                        <div class="col-md-8">
+                            <div class="d-flex align-items-center justify-content-md-end gap-2 mt-md-0 mt-3">
+                                <label class="small fw-bold text-nowrap mb-0 me-1">Target Grade:</label>
                                 <select name="to_grade_id" class="form-select form-select-sm border-success w-auto" required>
-                                    <option value="">Choose Target Grade...</option>
+                                    <option value="">Choose...</option>
                                     @foreach($grades as $grade)
                                         @if($grade->id != $selectedGrade->id)
                                             <option value="{{ $grade->id }}">{{ $grade->grade_name }}</option>
                                         @endif
                                     @endforeach
                                 </select>
-                                <button type="submit" class="btn btn-success btn-sm px-4 fw-bold">
-                                    <i class="bi bi-check-circle-fill me-1"></i> Start Promotion
+                                <label class="small fw-bold text-nowrap mb-0 ms-2 me-1">Target Session:</label>
+                                <input type="text" name="academic_year" class="form-control form-control-sm border-info w-auto" placeholder="e.g. 2024/2025" required>
+                                <button type="submit" class="btn btn-success btn-sm px-3 fw-bold ms-2">
+                                    <i class="bi bi-check-circle-fill me-1"></i> Start
                                 </button>
                             </div>
                         </div>
@@ -129,10 +134,15 @@
     @endif
 
     <script>
-        document.getElementById('selectAll').addEventListener('change', function() {
-            document.querySelectorAll('.student-checkbox').forEach(cb => {
-                cb.checked = this.checked;
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAll = document.getElementById('selectAll');
+            if (selectAll) {
+                selectAll.addEventListener('change', function() {
+                    document.querySelectorAll('.student-checkbox').forEach(cb => {
+                        cb.checked = this.checked;
+                    });
+                });
+            }
         });
     </script>
 

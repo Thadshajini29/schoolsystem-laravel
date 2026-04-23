@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4 fade-in">
         <div>
@@ -19,6 +18,7 @@
                 <i class="bi bi-book-fill me-2"></i>Subject Information
             </h6>
         </div>
+
         <div class="card-body p-4">
             @if($errors->any())
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -80,7 +80,7 @@
                         <div class="form-text">Unique identifier number for this subject</div>
                     </div>
                     
-                    <div class="col-md-6 mb-3">
+                     <div class="col-md-6 mb-3">
                         <label for="subject_order" class="form-label fw-semibold">Display Order</label>
                         <input type="number" 
                                name="subject_order" 

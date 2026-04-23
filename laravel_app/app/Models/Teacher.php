@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Teacher extends Model
 {
-    protected $fillable = ['name', 'phone', 'email'];
+    protected $fillable = ['name', 'phone', 'email', 'image_path'];
+
+    public function getImageUrlAttribute()
+    {
+        return $this->image_path ? asset('storage/' . $this->image_path) : asset('assets/img/default-avatar.png');
+    }
 
     public function subjects()
     {

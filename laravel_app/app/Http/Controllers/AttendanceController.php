@@ -16,9 +16,19 @@ class AttendanceController extends Controller
         $students = collect();
         $date = $request->get('date', now()->format('Y-m-d'));
 
-        if ($request->has('grade_id')) {
+        if ($request->filled('grade_id')) {
             $selectedGrade = Grade::findOrFail($request->grade_id);
-            $students = $selectedGrade->students;
+            $students = Student::where('grade_id', $selectedGrade->id)->get();
+            
+            // Load existing attendance for these students on this date
+            $existingAttendance = Attendance::where('grade_id', $selectedGrade->id)
+                ->where('date', $date)
+                ->pluck('status', 'student_id')
+                ->toArray();
+
+            foreach ($students as $student) {
+                $student->current_status = $existingAttendance[$student->id] ?? null;
+            }
         }
 
         return view('attendance.index', compact('grades', 'selectedGrade', 'students', 'date'));
@@ -30,7 +40,7 @@ class AttendanceController extends Controller
             'grade_id' => 'required|exists:grades,id',
             'date' => 'required|date',
             'attendance' => 'required|array',
-            'attendance.*' => 'in:present,absent',
+            'attendance.*' => 'in:present,absent,late',
         ]);
 
         $gradeId = $request->grade_id;
@@ -47,6 +57,10 @@ class AttendanceController extends Controller
                     'status' => $status,
                 ]
             );
+        }
+
+        if ($request->ajax()) {
+            return response()->json(['success' => 'Attendance updated successfully!']);
         }
 
         return redirect()->back()->with('success', 'Attendance marked successfully.');

@@ -48,12 +48,15 @@ Route::middleware(['auth', 'role'])->group(function () {
         
         // Teacher management
         Route::resource('teachers', \App\Http\Controllers\TeacherController::class);
+        Route::get('teachers/{teacher}/subjects', [\App\Http\Controllers\TeacherController::class, 'assignSubjects'])->name('teachers.assign_subjects');
+        Route::post('teachers/{teacher}/subjects', [\App\Http\Controllers\TeacherController::class, 'storeSubjects'])->name('teachers.store_subjects');
         
         // Activity Logs
         Route::get('activity-logs', [\App\Http\Controllers\ActivityLogController::class, 'index'])->name('activity_logs.index');
 
         // Promotions
         Route::get('promotions', [\App\Http\Controllers\PromotionController::class, 'index'])->name('promotions.index');
+        Route::get('promotions/history', [\App\Http\Controllers\PromotionController::class, 'history'])->name('promotions.history');
         Route::post('promotions', [\App\Http\Controllers\PromotionController::class, 'promote'])->name('promotions.submit');
     });
 
