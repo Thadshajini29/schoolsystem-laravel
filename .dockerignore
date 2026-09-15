@@ -1,0 +1,15 @@
+node_modules
+vendor
+.git
+.gitignore
+.env
+.env.backup
+.phpunit.result.cache
+storage/*.key
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+tests
+docker-compose*.yml
+deploy*.sh

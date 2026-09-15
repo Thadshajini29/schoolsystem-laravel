@@ -308,6 +308,20 @@
                     </a>
                 </li>
             @endif
+
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('attendance.*') ? 'active' : '' }}" href="{{ route('attendance.index') }}">
+                    <i class="bi bi-calendar-check-fill"></i>
+                    <span>Attendance</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('exams.*') || request()->routeIs('marks.*') ? 'active' : '' }}" href="{{ route('exams.index') }}">
+                    <i class="bi bi-award-fill"></i>
+                    <span>Exams & Marks</span>
+                </a>
+            </li>
         </ul>
     </nav>
 

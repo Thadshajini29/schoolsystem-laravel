@@ -85,22 +85,28 @@
                     </div>
                     <div class="card-body">
                         <div class="row g-3">
-                            <div class="col-md-4">
-                                <a href="{{ route('students.create') }}" class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center">
+                            <div class="col-md-3">
+                                <a href="{{ route('students.create') }}" class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center shadow-sm">
                                     <i class="bi bi-person-plus-fill me-2 fs-5"></i>
-                                    <span class="fw-semibold">Add New Student</span>
+                                    <span class="fw-semibold">Add Student</span>
                                 </a>
                             </div>
-                            <div class="col-md-4">
-                                <a href="{{ route('grades.create') }}" class="btn btn-success w-100 py-3 d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-bookmark-plus-fill me-2 fs-5"></i>
-                                    <span class="fw-semibold">Add New Grade</span>
+                            <div class="col-md-3">
+                                <a href="{{ route('attendance.create') }}" class="btn btn-success w-100 py-3 d-flex align-items-center justify-content-center shadow-sm">
+                                    <i class="bi bi-calendar-check-fill me-2 fs-5"></i>
+                                    <span class="fw-semibold">Take Attendance</span>
                                 </a>
                             </div>
-                            <div class="col-md-4">
-                                <a href="{{ route('subjects.create') }}" class="btn btn-info w-100 py-3 d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-book-half me-2 fs-5"></i>
-                                    <span class="fw-semibold">Add New Subject</span>
+                            <div class="col-md-3">
+                                <a href="{{ route('marks.entry') }}" class="btn btn-warning text-dark w-100 py-3 d-flex align-items-center justify-content-center shadow-sm">
+                                    <i class="bi bi-award-fill me-2 fs-5"></i>
+                                    <span class="fw-semibold">Enter Marks</span>
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="{{ route('exams.create') }}" class="btn btn-info w-100 py-3 d-flex align-items-center justify-content-center shadow-sm">
+                                    <i class="bi bi-journal-plus me-2 fs-5"></i>
+                                    <span class="fw-semibold">New Exam</span>
                                 </a>
                             </div>
                         </div>

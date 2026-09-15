@@ -4,6 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ExamController;
+use App\Http\Controllers\MarkController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -44,6 +47,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('subjects/create', [SubjectController::class, 'create'])->name('subjects.create');
         Route::post('subjects', [SubjectController::class, 'store'])->name('subjects.store');
         Route::delete('subjects/{subject}', [SubjectController::class, 'destroy'])->name('subjects.destroy');
+
+        // Exams - Create & Delete
+        Route::get('exams/create', [ExamController::class, 'create'])->name('exams.create');
+        Route::post('exams', [ExamController::class, 'store'])->name('exams.store');
+        Route::delete('exams/{exam}', [ExamController::class, 'destroy'])->name('exams.destroy');
     });
 
     // Admin and Teacher routes - View and Edit
@@ -63,6 +71,18 @@ Route::middleware(['auth'])->group(function () {
         // Subjects - Edit
         Route::get('subjects/{subject}/edit', [SubjectController::class, 'edit'])->name('subjects.edit');
         Route::put('subjects/{subject}', [SubjectController::class, 'update'])->name('subjects.update');
+
+        // Exams - Edit
+        Route::get('exams/{exam}/edit', [ExamController::class, 'edit'])->name('exams.edit');
+        Route::put('exams/{exam}', [ExamController::class, 'update'])->name('exams.update');
+
+        // Attendance - Take & Store Roll Call
+        Route::get('attendance/create', [AttendanceController::class, 'create'])->name('attendance.create');
+        Route::post('attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+
+        // Marks - Bulk Entry & Store
+        Route::get('marks/entry', [MarkController::class, 'entry'])->name('marks.entry');
+        Route::post('marks', [MarkController::class, 'store'])->name('marks.store');
     });
 
     // All authenticated users - View only
@@ -74,4 +94,12 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('subjects', [SubjectController::class, 'index'])->name('subjects.index');
     Route::get('subjects/{subject}', [SubjectController::class, 'show'])->name('subjects.show');
+
+    // Attendance - View & Reports
+    Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('attendance/report', [AttendanceController::class, 'report'])->name('attendance.report');
+
+    // Exams & Marks - View & Student Report Card
+    Route::get('exams', [ExamController::class, 'index'])->name('exams.index');
+    Route::get('students/{student}/exams/{exam}/report-card', [MarkController::class, 'reportCard'])->name('marks.report_card');
 });
